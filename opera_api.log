@@ -1,0 +1,619 @@
+2023-11-14 13:37:09 - INFO - Prompt:  
+You are an expert in generating Postgres SQL queries from questions.
+When you are asked a question, convert the question to the corresponding SQL query based on the schema of the table that contains  contract data being solutioned and executed
+CREATE TABLE cao.delivery_excellence_data_idcp (
+    market varchar(10000) NULL,
+    sector varchar(10000) NULL,
+    primary_service_line varchar(10000) NULL,
+    case_end_date varchar(10000) NULL,
+    bandmix_nearshore_delta float4 NULL,
+    bandmix_offshore_delta float4 NULL,
+    bandmix_delta float4 NULL,
+    geo varchar(10000) NULL,
+    band_mix_solutioning float4 NULL,
+    p_ap_percent_solution float4 NULL,
+    p_ap_percent_delivery float4 NULL,
+    p_ap_percent_gap float4 NULL,
+    "Roll-up Method" varchar(10000) NULL,
+    band_mix_delivery float5 NULL,
+    band_mix_onshore_solutioning float6 NULL,
+    partner_pct_delta float4 NULL,
+    offshore_pct_delta float4 NULL,
+    band_mix_gap varchar(10000) NULL,
+    industry varchar(10000) NULL,
+    contract_type varchar(10000) NULL,
+    contract_start_quarter varchar(10000) NULL,
+    opp_id varchar(10000) NULL,
+    opp_name varchar(10000) NULL,
+    band_mix_onshore_delivery float7 NULL,
+    band_mix_nearshore_solutioning float8 NULL,
+    band_mix_nearshore_delivery float9 NULL,
+    band_mix_offshore_solutioning float10 NULL,
+    band_mix_offshore_delivery float11 NULL,
+    worknumber varchar(10000) NULL,
+    client varchar(10000) NULL,
+    primary_offering varchar(10000) NULL,
+    contract_length_months int4 NULL,
+    total_hours_solutioning float4 NULL,
+    total_hours_delivery float4 NULL,
+    "total hours gap" float4 NULL,
+    cgp_delivery_contract float4 NULL,
+    revenue_delivery_contract float4 NULL,
+    cgp_pct_delivery_t_contract float4 NULL,
+    gap_to_pc_pct_contract float4 NULL,
+    bandmix_onshore_delta float4 NULL,
+    tcv_solutioning float4 NULL,
+    current_gp_pct_to_pc float4 NULL,
+    contract varchar(10000) NULL,
+    location_gap varchar(10000) NULL,
+    updated_date varchar(10000) NULL,
+    primary_practice varchar(10000) NULL
+);
+
+Each column in the table is described below, which must be taken into consideration while generating the SQL query for the given question.
+market: Market i.e country which owns the contract ('US', 'ANZ', 'LA', 'CA', 'UKI', 'IN', 'Nordic', 'FR', 'DACH', 'MEA', 'ASEAN', 'GCG', 'ITA', 'CEE', 'KOR', 'BeNeLux', 'SPGI')
+sector: Sector associated wit the contract ('Ind.', 'Comm.', 'Distr.', 'Fin. S.', 'Public')
+primary_service_line: Name of service line ('Hybrid Cloud Transformation', 'Hybrid Cloud Management', 'Finance & Supply Chain Transformation', 'Customer Transformation', 'Data & Technology Transformation', 'Industry Transformation', 'Talent Transformation', 'Hybrid Cloud Management Top (AUO)')
+case_end_date: Exact date when the delivery of contract will end (e.g. '2023-01-01')
+bandmix_nearshore_delta: Difference between bandmix nearshore delivery and solution
+bandmix_offshore_delta: Difference between bandmix offshore delivery and solution
+bandmix_delta: bandmix variance or difference between solution and delivery
+geo: Geographical region that owns the contract ('Americas', 'APAC', 'EMEA')
+band_mix_solutioning: Solutioning band mix
+p_ap_percent_solution: Partner hours in solution divided by total hours at the time of solutioning that is when the contract was being signed
+p_ap_percent_delivery: Partner hours in delivery divided by total hours at the time of delivery
+p_ap_percent_gap: Partner hours in delivery divided by total hours delivery and the difference between partner percentage in delivery and solution
+"Roll-up Method": Roll up method for reporting leaking contract ('ITD', 'Last Quarter')
+band_mix_delivery: Delivery band mix
+band_mix_onshore_solutioning: Onshore solutioning band mix
+partner_pct_delta: Difference between partner percentage in delivery and at the time of solutioning or contract signing
+offshore_pct_delta: Difference between Offshore percent solution and offshore percent delivery
+band_mix_gap: Bandmix difference between delivery and solution
+industry: Industry for the contract ('Aerospace & Defense','Automotive','Banking','Chemical & Petroleum','Computer Services','Consumer Products','Electronics','Energy & Utilities','Financial Markets','Healthcare','Government','Industrial Products','Insurance','Media & Entertainment','Professional Services','Retail','Wholesale Distribution & Services','Life Sciences','Telecommunications','Travel & Transportation')
+contract_type: Type of contract ('FP', 'T&M', 'FP + T&M')
+contract_start_quarter: Quarter in which the delivery of contract starts ('2013Q1', '2023Q3', '2017Q4', '2019Q3', '2020Q4', '2015Q2', '2020Q2', '2019Q2', '2023Q2', '2022Q3', '2019Q1', '2022Q4', '2020Q3', '2018Q1', '2020Q1', '2021Q1', '2012Q1', '2017Q1', '2022Q1', '2021Q2', '2023Q1', '2022Q2', '2021Q3', '2013Q4', '2024Q1', '2019Q4', '2021Q4')
+opp_id: Opportunity id or opportunity no. for the contract
+opp_name: Opportunity names or descriptions as given by Solution Consultants or Opportunity Owners
+band_mix_onshore_delivery: Onshore delivery band mix
+band_mix_nearshore_solutioning: Nearshore solutioning band mix
+band_mix_nearshore_delivery: Nearshore delivery band mix
+band_mix_offshore_solutioning: Offshore solutioning band mix
+band_mix_offshore_delivery: Offshore delivery band mix
+worknumber: Series of work numbers also known as WBS ID under the contract
+client: Name of client with whom the contract is signed
+primary_offering: Name of primary offering
+contract_length_months: Duration of contract delivery in months
+total_hours_solutioning: Total labor hours which were solutioned at the time of contract signing
+total_hours_delivery: Total delivery labor hours which have been realized till date
+"total hours gap": hours variance or difference between soluitioing and delivery
+cgp_delivery_contract: Contract level aggregation of gross profit amount
+revenue_delivery_contract: Contract level aggregation of revenue amount
+cgp_pct_delivery_t_contract: Contract level gross profit margin
+gap_to_pc_pct_contract: Percentage gap between Gross Profit Margin at the time of delivery versus solutioned i.e. Gross Profit margin at the time of contract signing
+bandmix_onshore_delta: Difference between bandmix onshore delivery and solution
+tcv_solutioning: Total contract value (TCV) during solutioning of the contract
+current_gp_pct_to_pc: Current gross profit (GP) percentage of the contract
+contract: Contract id or Contract number
+location_gap: Un-overlapping resource locations between delivery and solution
+updated_date: Date of when the data was updated in the DB
+primary_practice: IBM consulting practice which is executing the contract ('Customer Strategy & Process', 'Sustainability', 'Enterprise Strategy & Industry', 'Cognitive Process Automation', 'Incubating EA Managed Services', 'Finance Strategy & Core Process', 'Microsoft', 'Automation', 'Promontory Financial Group (PFG)', 'Migration Factory', 'Cloud Advisory', 'Oracle Managed Services', 'Data Services', 'Finance Strategy', 'SAP Managed Services', 'EDGE', 'Quality Engineering', 'Workday', 'DevSecOps & IT Automation', 'Finance & Procurement BPO', 'SAP', 'Emerging SaaS EA Managed Services', 'OpenShift & Middleware', 'Financial Crimes BPO (PRR)', 'Talent Transformation BPO', 'SAP CX & Commerce', 'Experience Design & Mobile', 'ServiceNow', 'Salesforce', 'Custom & Exponential Tech', 'Supply Chain Operations', 'AI & Analytics', 'Blockchain', 'Platform Engineering Services', 'Data Platform Services', 'Enterprise Strategy', 'Talent Transformation Strategy & Process', 'Oracle HCM', 'Oracle', 'AI, Analytics & Automation', ' plication Engineering Services', 'SAP Success Factors', 'Adobe', 'Enterprise Change & Transformation')
+
+Additionally the below instructions must be followed while generating the SQL query from the given question:
+1) Please bring the filter values (SQL WHERE clause) within single quote ('') for varchar type columns.
+2) Please bring only those filters criteria (SQL WHERE clause), which are asked explicitly in the question. Do not bring any other filter criteria.
+3) Always end the SQL query with <end of sql> tag.
+4) Do not use any other table or column other than the table and columns provided above.
+
+question: Contract with delivery band mix >  6
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE band_mix_delivery > 6
+<end of sql>
+
+question: Contract for T&T industry
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE industry ILIKE '%Travel & Transportation%'
+<end of sql>
+
+question: T&M contract
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE contract_type = 'T&M'
+<end of sql>
+
+question: Contract that started between Q1 2023 and Q4 2023
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE contract_start_quarter BETWEEN '2023Q1' AND '2023Q4'
+<end of sql>
+
+question: Contract in Benelux market
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE ILIKE '%Benelux%'
+<end of sql>
+
+question: Contracts that ended on 31 Dec 2023
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE case_end_date = '2023-12-31'
+<end of sql>
+
+question: Contract whose contract number is CFT6JWS
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE contract ILIKE 'CFT6JWS'
+<end of sql>
+
+question: Fixed Price contracts
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE contract_type = 'FP'
+<end of sql>
+
+question: Industrial sector contract
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE sector = 'Ind.'
+<end of sql>
+
+question: Top 10 leaking contracts
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp ORDER BY gap_to_pc_pct_contract ASC LIMIT 10
+<end of sql>
+
+question: Financial sector contract
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE sector = 'Fin. S.'
+<end of sql>
+
+question: Contract for APAC geo
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE geo = 'APAC'
+<end of sql>
+
+question: Comm sector contract
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE sector = 'Comm.'
+<end of sql>
+
+question: Contract for HCM Service Line
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE primary_service_line ILIKE 'Hybrid Cloud Management'
+<end of sql>
+
+question: Contracts with highest hours variance between solution and delivery
+sql_query: "SELECT * FROM cao.delivery_excellence_data_idcp WHERE gap_to_pc_pct_contract < 0 AND ""Roll-up Method"" = 'ITD' ORDER BY ""total hours gap"" DESC LIMIT 10"
+<end of sql>
+
+question: Contract for Shell client
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE client ILIKE '%Shell%'
+<end of sql>
+
+question: Distribution sector contract
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE sector = 'Dist.'
+<end of sql>
+
+question: how many contract
+sql_query:
+2023-11-14 13:37:15 - INFO - Client successfully initialized
+2023-11-14 13:37:22 - INFO - Successfully finished generate for url: 'https://us-south.ml.cloud.ibm.com/ml/v1-beta/generation/text?version=2023-10-30'
+2023-11-14 13:37:22 - INFO - Response: {
+  "model_id": "meta-llama/llama-2-70b-chat",
+  "created_at": "2023-11-14T08:07:22.622Z",
+  "results": [
+    {
+      "generated_text": " SELECT COUNT(*) FROM cao.delivery_excellence_data_idcp\n<end of sql>",
+      "generated_token_count": 24,
+      "input_token_count": 3485,
+      "stop_reason": "stop_sequence",
+      "seed": 1
+    }
+  ],
+  "system": {
+    "warnings": [
+      {
+        "message": "This model is a Non-IBM Product governed by a third-party license that may impose use restrictions and other obligations. By using this model you agree to its terms as identified in the following URL. URL: https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-models.html?context=wx",
+        "id": "disclaimer_warning"
+      }
+    ]
+  }
+}
+2023-11-14 13:37:22 - INFO - SQL Query: SELECT COUNT(*) FROM cao.delivery_excellence_data_idcp
+2023-11-14 13:37:25 - INFO - Executing SQL query: SELECT COUNT(*) FROM cao.delivery_excellence_data_idcp
+2023-11-14 13:37:26 - INFO - Executed SQL query: SELECT COUNT(*) FROM cao.delivery_excellence_data_idcp
+2023-11-14 13:37:26 - INFO - SQL Result: {'sql_generation_status': 'INVALID', 'sql_query': 'SELECT COUNT(*) FROM cao.delivery_excellence_data_idcp', 'nl_response': "failed to execute query error: Cannot save file into a non-existent directory: 'sql_result'", 'result': 'ERROR while executing query.', 'st_result': 'Error while executing SQL query.', 'sql_result_url': 'Error while executing SQL query.'}
+2023-11-14 13:43:28 - INFO - Prompt:  
+You are an expert in generating Postgres SQL queries from questions.
+When you are asked a question, convert the question to the corresponding SQL query based on the schema of the table that contains  contract data being solutioned and executed
+CREATE TABLE cao.delivery_excellence_data_idcp (
+    market varchar(10000) NULL,
+    sector varchar(10000) NULL,
+    primary_service_line varchar(10000) NULL,
+    case_end_date varchar(10000) NULL,
+    bandmix_nearshore_delta float4 NULL,
+    bandmix_offshore_delta float4 NULL,
+    bandmix_delta float4 NULL,
+    geo varchar(10000) NULL,
+    band_mix_solutioning float4 NULL,
+    p_ap_percent_solution float4 NULL,
+    p_ap_percent_delivery float4 NULL,
+    p_ap_percent_gap float4 NULL,
+    "Roll-up Method" varchar(10000) NULL,
+    band_mix_delivery float5 NULL,
+    band_mix_onshore_solutioning float6 NULL,
+    partner_pct_delta float4 NULL,
+    offshore_pct_delta float4 NULL,
+    band_mix_gap varchar(10000) NULL,
+    industry varchar(10000) NULL,
+    contract_type varchar(10000) NULL,
+    contract_start_quarter varchar(10000) NULL,
+    opp_id varchar(10000) NULL,
+    opp_name varchar(10000) NULL,
+    band_mix_onshore_delivery float7 NULL,
+    band_mix_nearshore_solutioning float8 NULL,
+    band_mix_nearshore_delivery float9 NULL,
+    band_mix_offshore_solutioning float10 NULL,
+    band_mix_offshore_delivery float11 NULL,
+    worknumber varchar(10000) NULL,
+    client varchar(10000) NULL,
+    primary_offering varchar(10000) NULL,
+    contract_length_months int4 NULL,
+    total_hours_solutioning float4 NULL,
+    total_hours_delivery float4 NULL,
+    "total hours gap" float4 NULL,
+    cgp_delivery_contract float4 NULL,
+    revenue_delivery_contract float4 NULL,
+    cgp_pct_delivery_t_contract float4 NULL,
+    gap_to_pc_pct_contract float4 NULL,
+    bandmix_onshore_delta float4 NULL,
+    tcv_solutioning float4 NULL,
+    current_gp_pct_to_pc float4 NULL,
+    contract varchar(10000) NULL,
+    location_gap varchar(10000) NULL,
+    updated_date varchar(10000) NULL,
+    primary_practice varchar(10000) NULL
+);
+
+Each column in the table is described below, which must be taken into consideration while generating the SQL query for the given question.
+market: Market i.e country which owns the contract ('US', 'ANZ', 'LA', 'CA', 'UKI', 'IN', 'Nordic', 'FR', 'DACH', 'MEA', 'ASEAN', 'GCG', 'ITA', 'CEE', 'KOR', 'BeNeLux', 'SPGI')
+sector: Sector associated wit the contract ('Ind.', 'Comm.', 'Distr.', 'Fin. S.', 'Public')
+primary_service_line: Name of service line ('Hybrid Cloud Transformation', 'Hybrid Cloud Management', 'Finance & Supply Chain Transformation', 'Customer Transformation', 'Data & Technology Transformation', 'Industry Transformation', 'Talent Transformation', 'Hybrid Cloud Management Top (AUO)')
+case_end_date: Exact date when the delivery of contract will end (e.g. '2023-01-01')
+bandmix_nearshore_delta: Difference between bandmix nearshore delivery and solution
+bandmix_offshore_delta: Difference between bandmix offshore delivery and solution
+bandmix_delta: bandmix variance or difference between solution and delivery
+geo: Geographical region that owns the contract ('Americas', 'APAC', 'EMEA')
+band_mix_solutioning: Solutioning band mix
+p_ap_percent_solution: Partner hours in solution divided by total hours at the time of solutioning that is when the contract was being signed
+p_ap_percent_delivery: Partner hours in delivery divided by total hours at the time of delivery
+p_ap_percent_gap: Partner hours in delivery divided by total hours delivery and the difference between partner percentage in delivery and solution
+"Roll-up Method": Roll up method for reporting leaking contract ('ITD', 'Last Quarter')
+band_mix_delivery: Delivery band mix
+band_mix_onshore_solutioning: Onshore solutioning band mix
+partner_pct_delta: Difference between partner percentage in delivery and at the time of solutioning or contract signing
+offshore_pct_delta: Difference between Offshore percent solution and offshore percent delivery
+band_mix_gap: Bandmix difference between delivery and solution
+industry: Industry for the contract ('Aerospace & Defense','Automotive','Banking','Chemical & Petroleum','Computer Services','Consumer Products','Electronics','Energy & Utilities','Financial Markets','Healthcare','Government','Industrial Products','Insurance','Media & Entertainment','Professional Services','Retail','Wholesale Distribution & Services','Life Sciences','Telecommunications','Travel & Transportation')
+contract_type: Type of contract ('FP', 'T&M', 'FP + T&M')
+contract_start_quarter: Quarter in which the delivery of contract starts ('2013Q1', '2023Q3', '2017Q4', '2019Q3', '2020Q4', '2015Q2', '2020Q2', '2019Q2', '2023Q2', '2022Q3', '2019Q1', '2022Q4', '2020Q3', '2018Q1', '2020Q1', '2021Q1', '2012Q1', '2017Q1', '2022Q1', '2021Q2', '2023Q1', '2022Q2', '2021Q3', '2013Q4', '2024Q1', '2019Q4', '2021Q4')
+opp_id: Opportunity id or opportunity no. for the contract
+opp_name: Opportunity names or descriptions as given by Solution Consultants or Opportunity Owners
+band_mix_onshore_delivery: Onshore delivery band mix
+band_mix_nearshore_solutioning: Nearshore solutioning band mix
+band_mix_nearshore_delivery: Nearshore delivery band mix
+band_mix_offshore_solutioning: Offshore solutioning band mix
+band_mix_offshore_delivery: Offshore delivery band mix
+worknumber: Series of work numbers also known as WBS ID under the contract
+client: Name of client with whom the contract is signed
+primary_offering: Name of primary offering
+contract_length_months: Duration of contract delivery in months
+total_hours_solutioning: Total labor hours which were solutioned at the time of contract signing
+total_hours_delivery: Total delivery labor hours which have been realized till date
+"total hours gap": hours variance or difference between soluitioing and delivery
+cgp_delivery_contract: Contract level aggregation of gross profit amount
+revenue_delivery_contract: Contract level aggregation of revenue amount
+cgp_pct_delivery_t_contract: Contract level gross profit margin
+gap_to_pc_pct_contract: Percentage gap between Gross Profit Margin at the time of delivery versus solutioned i.e. Gross Profit margin at the time of contract signing
+bandmix_onshore_delta: Difference between bandmix onshore delivery and solution
+tcv_solutioning: Total contract value (TCV) during solutioning of the contract
+current_gp_pct_to_pc: Current gross profit (GP) percentage of the contract
+contract: Contract id or Contract number
+location_gap: Un-overlapping resource locations between delivery and solution
+updated_date: Date of when the data was updated in the DB
+primary_practice: IBM consulting practice which is executing the contract ('Customer Strategy & Process', 'Sustainability', 'Enterprise Strategy & Industry', 'Cognitive Process Automation', 'Incubating EA Managed Services', 'Finance Strategy & Core Process', 'Microsoft', 'Automation', 'Promontory Financial Group (PFG)', 'Migration Factory', 'Cloud Advisory', 'Oracle Managed Services', 'Data Services', 'Finance Strategy', 'SAP Managed Services', 'EDGE', 'Quality Engineering', 'Workday', 'DevSecOps & IT Automation', 'Finance & Procurement BPO', 'SAP', 'Emerging SaaS EA Managed Services', 'OpenShift & Middleware', 'Financial Crimes BPO (PRR)', 'Talent Transformation BPO', 'SAP CX & Commerce', 'Experience Design & Mobile', 'ServiceNow', 'Salesforce', 'Custom & Exponential Tech', 'Supply Chain Operations', 'AI & Analytics', 'Blockchain', 'Platform Engineering Services', 'Data Platform Services', 'Enterprise Strategy', 'Talent Transformation Strategy & Process', 'Oracle HCM', 'Oracle', 'AI, Analytics & Automation', ' plication Engineering Services', 'SAP Success Factors', 'Adobe', 'Enterprise Change & Transformation')
+
+Additionally the below instructions must be followed while generating the SQL query from the given question:
+1) Please bring the filter values (SQL WHERE clause) within single quote ('') for varchar type columns.
+2) Please bring only those filters criteria (SQL WHERE clause), which are asked explicitly in the question. Do not bring any other filter criteria.
+3) Always end the SQL query with <end of sql> tag.
+4) Do not use any other table or column other than the table and columns provided above.
+
+question: Contract with delivery band mix >  6
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE band_mix_delivery > 6
+<end of sql>
+
+question: Contract for T&T industry
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE industry ILIKE '%Travel & Transportation%'
+<end of sql>
+
+question: T&M contract
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE contract_type = 'T&M'
+<end of sql>
+
+question: Contract that started between Q1 2023 and Q4 2023
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE contract_start_quarter BETWEEN '2023Q1' AND '2023Q4'
+<end of sql>
+
+question: Contract in Benelux market
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE ILIKE '%Benelux%'
+<end of sql>
+
+question: Contracts that ended on 31 Dec 2023
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE case_end_date = '2023-12-31'
+<end of sql>
+
+question: Contract whose contract number is CFT6JWS
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE contract ILIKE 'CFT6JWS'
+<end of sql>
+
+question: Fixed Price contracts
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE contract_type = 'FP'
+<end of sql>
+
+question: Industrial sector contract
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE sector = 'Ind.'
+<end of sql>
+
+question: Top 10 leaking contracts
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp ORDER BY gap_to_pc_pct_contract ASC LIMIT 10
+<end of sql>
+
+question: Financial sector contract
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE sector = 'Fin. S.'
+<end of sql>
+
+question: Contract for APAC geo
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE geo = 'APAC'
+<end of sql>
+
+question: Comm sector contract
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE sector = 'Comm.'
+<end of sql>
+
+question: Contract for HCM Service Line
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE primary_service_line ILIKE 'Hybrid Cloud Management'
+<end of sql>
+
+question: Contracts with highest hours variance between solution and delivery
+sql_query: "SELECT * FROM cao.delivery_excellence_data_idcp WHERE gap_to_pc_pct_contract < 0 AND ""Roll-up Method"" = 'ITD' ORDER BY ""total hours gap"" DESC LIMIT 10"
+<end of sql>
+
+question: Contract for Shell client
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE client ILIKE '%Shell%'
+<end of sql>
+
+question: Distribution sector contract
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE sector = 'Dist.'
+<end of sql>
+
+question: how many contract
+sql_query:
+2023-11-14 13:43:33 - INFO - Client successfully initialized
+2023-11-14 13:43:41 - INFO - Successfully finished generate for url: 'https://us-south.ml.cloud.ibm.com/ml/v1-beta/generation/text?version=2023-10-30'
+2023-11-14 13:43:41 - INFO - Response: {
+  "model_id": "meta-llama/llama-2-70b-chat",
+  "created_at": "2023-11-14T08:13:41.373Z",
+  "results": [
+    {
+      "generated_text": " SELECT COUNT(*) FROM cao.delivery_excellence_data_idcp\n<end of sql>",
+      "generated_token_count": 24,
+      "input_token_count": 3485,
+      "stop_reason": "stop_sequence",
+      "seed": 1
+    }
+  ],
+  "system": {
+    "warnings": [
+      {
+        "message": "This model is a Non-IBM Product governed by a third-party license that may impose use restrictions and other obligations. By using this model you agree to its terms as identified in the following URL. URL: https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-models.html?context=wx",
+        "id": "disclaimer_warning"
+      }
+    ]
+  }
+}
+2023-11-14 13:43:41 - INFO - SQL Query: SELECT COUNT(*) FROM cao.delivery_excellence_data_idcp
+2023-11-14 13:43:43 - INFO - Executing SQL query: SELECT COUNT(*) FROM cao.delivery_excellence_data_idcp
+2023-11-14 13:43:44 - INFO - Executed SQL query: SELECT COUNT(*) FROM cao.delivery_excellence_data_idcp
+2023-11-14 13:43:44 - INFO - SQL Result: {'sql_generation_status': 'INVALID', 'sql_query': 'SELECT COUNT(*) FROM cao.delivery_excellence_data_idcp', 'nl_response': "failed to execute query error: Cannot save file into a non-existent directory: 'sql_result'", 'result': 'ERROR while executing query.', 'st_result': 'Error while executing SQL query.', 'sql_result_url': 'Error while executing SQL query.'}
+2023-11-14 13:46:08 - INFO - Prompt:  
+You are an expert in generating Postgres SQL queries from questions.
+When you are asked a question, convert the question to the corresponding SQL query based on the schema of the table that contains  contract data being solutioned and executed
+CREATE TABLE cao.delivery_excellence_data_idcp (
+    market varchar(10000) NULL,
+    sector varchar(10000) NULL,
+    primary_service_line varchar(10000) NULL,
+    case_end_date varchar(10000) NULL,
+    bandmix_nearshore_delta float4 NULL,
+    bandmix_offshore_delta float4 NULL,
+    bandmix_delta float4 NULL,
+    geo varchar(10000) NULL,
+    band_mix_solutioning float4 NULL,
+    p_ap_percent_solution float4 NULL,
+    p_ap_percent_delivery float4 NULL,
+    p_ap_percent_gap float4 NULL,
+    "Roll-up Method" varchar(10000) NULL,
+    band_mix_delivery float5 NULL,
+    band_mix_onshore_solutioning float6 NULL,
+    partner_pct_delta float4 NULL,
+    offshore_pct_delta float4 NULL,
+    band_mix_gap varchar(10000) NULL,
+    industry varchar(10000) NULL,
+    contract_type varchar(10000) NULL,
+    contract_start_quarter varchar(10000) NULL,
+    opp_id varchar(10000) NULL,
+    opp_name varchar(10000) NULL,
+    band_mix_onshore_delivery float7 NULL,
+    band_mix_nearshore_solutioning float8 NULL,
+    band_mix_nearshore_delivery float9 NULL,
+    band_mix_offshore_solutioning float10 NULL,
+    band_mix_offshore_delivery float11 NULL,
+    worknumber varchar(10000) NULL,
+    client varchar(10000) NULL,
+    primary_offering varchar(10000) NULL,
+    contract_length_months int4 NULL,
+    total_hours_solutioning float4 NULL,
+    total_hours_delivery float4 NULL,
+    "total hours gap" float4 NULL,
+    cgp_delivery_contract float4 NULL,
+    revenue_delivery_contract float4 NULL,
+    cgp_pct_delivery_t_contract float4 NULL,
+    gap_to_pc_pct_contract float4 NULL,
+    bandmix_onshore_delta float4 NULL,
+    tcv_solutioning float4 NULL,
+    current_gp_pct_to_pc float4 NULL,
+    contract varchar(10000) NULL,
+    location_gap varchar(10000) NULL,
+    updated_date varchar(10000) NULL,
+    primary_practice varchar(10000) NULL
+);
+
+Each column in the table is described below, which must be taken into consideration while generating the SQL query for the given question.
+market: Market i.e country which owns the contract ('US', 'ANZ', 'LA', 'CA', 'UKI', 'IN', 'Nordic', 'FR', 'DACH', 'MEA', 'ASEAN', 'GCG', 'ITA', 'CEE', 'KOR', 'BeNeLux', 'SPGI')
+sector: Sector associated wit the contract ('Ind.', 'Comm.', 'Distr.', 'Fin. S.', 'Public')
+primary_service_line: Name of service line ('Hybrid Cloud Transformation', 'Hybrid Cloud Management', 'Finance & Supply Chain Transformation', 'Customer Transformation', 'Data & Technology Transformation', 'Industry Transformation', 'Talent Transformation', 'Hybrid Cloud Management Top (AUO)')
+case_end_date: Exact date when the delivery of contract will end (e.g. '2023-01-01')
+bandmix_nearshore_delta: Difference between bandmix nearshore delivery and solution
+bandmix_offshore_delta: Difference between bandmix offshore delivery and solution
+bandmix_delta: bandmix variance or difference between solution and delivery
+geo: Geographical region that owns the contract ('Americas', 'APAC', 'EMEA')
+band_mix_solutioning: Solutioning band mix
+p_ap_percent_solution: Partner hours in solution divided by total hours at the time of solutioning that is when the contract was being signed
+p_ap_percent_delivery: Partner hours in delivery divided by total hours at the time of delivery
+p_ap_percent_gap: Partner hours in delivery divided by total hours delivery and the difference between partner percentage in delivery and solution
+"Roll-up Method": Roll up method for reporting leaking contract ('ITD', 'Last Quarter')
+band_mix_delivery: Delivery band mix
+band_mix_onshore_solutioning: Onshore solutioning band mix
+partner_pct_delta: Difference between partner percentage in delivery and at the time of solutioning or contract signing
+offshore_pct_delta: Difference between Offshore percent solution and offshore percent delivery
+band_mix_gap: Bandmix difference between delivery and solution
+industry: Industry for the contract ('Aerospace & Defense','Automotive','Banking','Chemical & Petroleum','Computer Services','Consumer Products','Electronics','Energy & Utilities','Financial Markets','Healthcare','Government','Industrial Products','Insurance','Media & Entertainment','Professional Services','Retail','Wholesale Distribution & Services','Life Sciences','Telecommunications','Travel & Transportation')
+contract_type: Type of contract ('FP', 'T&M', 'FP + T&M')
+contract_start_quarter: Quarter in which the delivery of contract starts ('2013Q1', '2023Q3', '2017Q4', '2019Q3', '2020Q4', '2015Q2', '2020Q2', '2019Q2', '2023Q2', '2022Q3', '2019Q1', '2022Q4', '2020Q3', '2018Q1', '2020Q1', '2021Q1', '2012Q1', '2017Q1', '2022Q1', '2021Q2', '2023Q1', '2022Q2', '2021Q3', '2013Q4', '2024Q1', '2019Q4', '2021Q4')
+opp_id: Opportunity id or opportunity no. for the contract
+opp_name: Opportunity names or descriptions as given by Solution Consultants or Opportunity Owners
+band_mix_onshore_delivery: Onshore delivery band mix
+band_mix_nearshore_solutioning: Nearshore solutioning band mix
+band_mix_nearshore_delivery: Nearshore delivery band mix
+band_mix_offshore_solutioning: Offshore solutioning band mix
+band_mix_offshore_delivery: Offshore delivery band mix
+worknumber: Series of work numbers also known as WBS ID under the contract
+client: Name of client with whom the contract is signed
+primary_offering: Name of primary offering
+contract_length_months: Duration of contract delivery in months
+total_hours_solutioning: Total labor hours which were solutioned at the time of contract signing
+total_hours_delivery: Total delivery labor hours which have been realized till date
+"total hours gap": hours variance or difference between soluitioing and delivery
+cgp_delivery_contract: Contract level aggregation of gross profit amount
+revenue_delivery_contract: Contract level aggregation of revenue amount
+cgp_pct_delivery_t_contract: Contract level gross profit margin
+gap_to_pc_pct_contract: Percentage gap between Gross Profit Margin at the time of delivery versus solutioned i.e. Gross Profit margin at the time of contract signing
+bandmix_onshore_delta: Difference between bandmix onshore delivery and solution
+tcv_solutioning: Total contract value (TCV) during solutioning of the contract
+current_gp_pct_to_pc: Current gross profit (GP) percentage of the contract
+contract: Contract id or Contract number
+location_gap: Un-overlapping resource locations between delivery and solution
+updated_date: Date of when the data was updated in the DB
+primary_practice: IBM consulting practice which is executing the contract ('Customer Strategy & Process', 'Sustainability', 'Enterprise Strategy & Industry', 'Cognitive Process Automation', 'Incubating EA Managed Services', 'Finance Strategy & Core Process', 'Microsoft', 'Automation', 'Promontory Financial Group (PFG)', 'Migration Factory', 'Cloud Advisory', 'Oracle Managed Services', 'Data Services', 'Finance Strategy', 'SAP Managed Services', 'EDGE', 'Quality Engineering', 'Workday', 'DevSecOps & IT Automation', 'Finance & Procurement BPO', 'SAP', 'Emerging SaaS EA Managed Services', 'OpenShift & Middleware', 'Financial Crimes BPO (PRR)', 'Talent Transformation BPO', 'SAP CX & Commerce', 'Experience Design & Mobile', 'ServiceNow', 'Salesforce', 'Custom & Exponential Tech', 'Supply Chain Operations', 'AI & Analytics', 'Blockchain', 'Platform Engineering Services', 'Data Platform Services', 'Enterprise Strategy', 'Talent Transformation Strategy & Process', 'Oracle HCM', 'Oracle', 'AI, Analytics & Automation', ' plication Engineering Services', 'SAP Success Factors', 'Adobe', 'Enterprise Change & Transformation')
+
+Additionally the below instructions must be followed while generating the SQL query from the given question:
+1) Please bring the filter values (SQL WHERE clause) within single quote ('') for varchar type columns.
+2) Please bring only those filters criteria (SQL WHERE clause), which are asked explicitly in the question. Do not bring any other filter criteria.
+3) Always end the SQL query with <end of sql> tag.
+4) Do not use any other table or column other than the table and columns provided above.
+
+question: Contract with delivery band mix >  6
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE band_mix_delivery > 6
+<end of sql>
+
+question: Contract for T&T industry
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE industry ILIKE '%Travel & Transportation%'
+<end of sql>
+
+question: T&M contract
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE contract_type = 'T&M'
+<end of sql>
+
+question: Contract that started between Q1 2023 and Q4 2023
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE contract_start_quarter BETWEEN '2023Q1' AND '2023Q4'
+<end of sql>
+
+question: Contract in Benelux market
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE ILIKE '%Benelux%'
+<end of sql>
+
+question: Contracts that ended on 31 Dec 2023
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE case_end_date = '2023-12-31'
+<end of sql>
+
+question: Contract whose contract number is CFT6JWS
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE contract ILIKE 'CFT6JWS'
+<end of sql>
+
+question: Fixed Price contracts
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE contract_type = 'FP'
+<end of sql>
+
+question: Industrial sector contract
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE sector = 'Ind.'
+<end of sql>
+
+question: Top 10 leaking contracts
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp ORDER BY gap_to_pc_pct_contract ASC LIMIT 10
+<end of sql>
+
+question: Financial sector contract
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE sector = 'Fin. S.'
+<end of sql>
+
+question: Contract for APAC geo
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE geo = 'APAC'
+<end of sql>
+
+question: Comm sector contract
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE sector = 'Comm.'
+<end of sql>
+
+question: Contract for HCM Service Line
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE primary_service_line ILIKE 'Hybrid Cloud Management'
+<end of sql>
+
+question: Contracts with highest hours variance between solution and delivery
+sql_query: "SELECT * FROM cao.delivery_excellence_data_idcp WHERE gap_to_pc_pct_contract < 0 AND ""Roll-up Method"" = 'ITD' ORDER BY ""total hours gap"" DESC LIMIT 10"
+<end of sql>
+
+question: Contract for Shell client
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE client ILIKE '%Shell%'
+<end of sql>
+
+question: Distribution sector contract
+sql_query: SELECT * FROM cao.delivery_excellence_data_idcp WHERE sector = 'Dist.'
+<end of sql>
+
+question: how many contract
+sql_query:
+2023-11-14 13:46:14 - INFO - Client successfully initialized
+2023-11-14 13:46:22 - INFO - Successfully finished generate for url: 'https://us-south.ml.cloud.ibm.com/ml/v1-beta/generation/text?version=2023-10-30'
+2023-11-14 13:46:22 - INFO - Response: {
+  "model_id": "meta-llama/llama-2-70b-chat",
+  "created_at": "2023-11-14T08:16:21.868Z",
+  "results": [
+    {
+      "generated_text": " SELECT COUNT(*) FROM cao.delivery_excellence_data_idcp\n<end of sql>",
+      "generated_token_count": 24,
+      "input_token_count": 3485,
+      "stop_reason": "stop_sequence",
+      "seed": 1
+    }
+  ],
+  "system": {
+    "warnings": [
+      {
+        "message": "This model is a Non-IBM Product governed by a third-party license that may impose use restrictions and other obligations. By using this model you agree to its terms as identified in the following URL. URL: https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/fm-models.html?context=wx",
+        "id": "disclaimer_warning"
+      }
+    ]
+  }
+}
+2023-11-14 13:46:22 - INFO - SQL Query: SELECT COUNT(*) FROM cao.delivery_excellence_data_idcp
+2023-11-14 13:46:24 - INFO - Executing SQL query: SELECT COUNT(*) FROM cao.delivery_excellence_data_idcp
+2023-11-14 13:46:24 - INFO - Executed SQL query: SELECT COUNT(*) FROM cao.delivery_excellence_data_idcp
+2023-11-14 13:46:24 - INFO - [36mPOST https://upload.box.com/api/2.0/files/content {'data': <MultipartEncoder: OrderedDict([('attributes', '{"name": "query_results_20231114134624.xlsx", "parent": {"id": "233922563896"}, "description": null, "content_created_at": null, "content_modified_at": null}'), ('file', ('unused', <_io.BufferedReader name='./src/sql_result/query_results_20231114134624.xlsx'>))])>,
+ 'headers': {'Authorization': '---nOhx',
+             'Content-Type': 'multipart/form-data; '
+                             'boundary=3791697ce8394d0ab24772c502974bb0',
+             'User-Agent': 'box-python-sdk-3.9.2',
+             'X-Box-UA': 'agent=box-python-sdk/3.9.2; env=python/3.9.6'}}[0m
+2023-11-14 13:46:27 - INFO - [32m"POST https://upload.box.com/api/2.0/files/content" 201 1476
+{'Server': 'nginx', 'Date': 'Tue, 14 Nov 2023 08:16:26 GMT', 'Content-Type': 'application/json', 'Content-Length': '1476', 'cache-control': 'no-cache, no-store', 'x-envoy-upstream-service-time': '1743', 'strict-transport-security': 'max-age=31536000', 'X-Box-Original-Ingress-ADC-Host': 'prod-b-traffic-manager-tb1c', 'Via': '1.1 google', 'Alt-Svc': 'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000'}
+<No content or content unavailable for logging>
+[0m
+2023-11-14 13:46:27 - INFO - SQL Result: {'sql_generation_status': 'VALID', 'sql_query': 'SELECT COUNT(*) FROM cao.delivery_excellence_data_idcp', 'nl_response': '[(4550,)]', 'result': [{'type': 'section', 'text': {'type': 'mrkdwn', 'text': '```+-------+\n| Count |\n+-------+\n|  4550 |\n+-------+```'}}], 'st_result': '<table border="1" class="dataframe">\n  <thead>\n    <tr style="text-align: right;">\n      <th>Count</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>4550</td>\n    </tr>\n  </tbody>\n</table>', 'sql_result_url': 'https://ibm.ent.box.com/file/1361926413010'}

@@ -1,0 +1,17 @@
+requests
+pandas
+openpyxl
+json2html
+psycopg2
+ibm-cloud-sdk-core
+fastapi
+uvicorn
+python-dotenv
+tabulate
+chromadb
+sentence-transformers
+ibm_watson_machine_learning
+boxsdk
+ibm-generative-ai
+prettytable
+
